@@ -1,0 +1,11 @@
+settings:
+  use_proxies: true #true or false
+  num_threads: 100 #threds for token checker
+  chrome_version: "122" 
+  iproyal_log: "login" #login
+  iproyal_pass: "password" #password
+  iproyal_country: "us" #ru, ua, by etc
+  proxy_source: "file"  #file, generate
+  delay_between_tasks: 1 
+  spam_threads: 10 #threads for spammer
+  billing_threads: 10 #threads for billing checker

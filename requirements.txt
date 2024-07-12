@@ -1,0 +1,7 @@
+httpx
+asyncio
+concurrent.futures
+rich
+inquirerpy
+pyyaml
+nest_asyncio
