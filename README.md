@@ -6,7 +6,7 @@ JonyaTooL - это утилита для работы с Discord аккаунт�
 
 1. Склонируйте репозиторий:
     ```bash
-    git clone <URL_вашего_репозитория>
+    git clone https://github.com/JonyaCode/JonyaTooL
     cd JonyaTooL
     ```
 
