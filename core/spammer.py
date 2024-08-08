@@ -17,7 +17,7 @@ USERAGENT = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 DELAY_BETWEEN_TASKS = config['settings']['delay_between_tasks']
 SPAM_THREADS = config['settings']['spam_threads']
 
-async def get_open_dms(token, proxy=None):
+async def get_open_dms(token, proxy):
     headers = {
         'user-agent': USERAGENT,
         'authorization': token
@@ -30,7 +30,7 @@ async def get_open_dms(token, proxy=None):
             return response.json()
         return []
 
-async def get_guild_channels(token, proxy=None):
+async def get_guild_channels(token, proxy):
     headers = {
         'user-agent': USERAGENT,
         'authorization': token
@@ -50,7 +50,7 @@ async def get_guild_channels(token, proxy=None):
             return channels
         return []
 
-async def send_message(token, channel_id, message, proxy=None):
+async def send_message(token, channel_id, message, proxy):
     headers = {
         'user-agent': USERAGENT,
         'authorization': token,
@@ -65,7 +65,7 @@ async def send_message(token, channel_id, message, proxy=None):
             return True
         return False
 
-async def spam_messages(token, message, proxy=None):
+async def spam_messages(token, message, proxy):
     open_dms = await get_open_dms(token, proxy)
     guild_channels = await get_guild_channels(token, proxy)
 
