@@ -50,7 +50,7 @@ async def get_guild_channels(token, proxy):
             return channels
         return []
 
-async def send_message(token, channel_id, message, proxy):
+async def send_message(token, channel_id, message, proxy, thread_id):
     headers = {
         'user-agent': USERAGENT,
         'authorization': token,
@@ -62,21 +62,23 @@ async def send_message(token, channel_id, message, proxy):
     async with httpx.AsyncClient(headers=headers, proxies=proxies) as client:
         response = await client.post(f'https://discord.com/api/v9/channels/{channel_id}/messages', json=json_data)
         if response.status_code == 200:
+            timestamp = time.strftime("%H:%M:%S")
+            console.print(f"[green][{timestamp}][Thread {thread_id}] {token} | sent message to user {channel_id}[/]")
             return True
         return False
 
-async def spam_messages(token, message, proxy):
+async def spam_messages(token, message, proxy, thread_id):
     open_dms = await get_open_dms(token, proxy)
     guild_channels = await get_guild_channels(token, proxy)
 
     sent_count = 0
     for dm in open_dms:
-        if await send_message(token, dm['id'], message, proxy):
+        if await send_message(token, dm['id'], message, proxy, thread_id):
             sent_count += 1
 
     for channel in guild_channels:
         if channel['type'] == 0:  # Text channel type
-            if await send_message(token, channel['id'], message, proxy):
+            if await send_message(token, channel['id'], message, proxy, thread_id):
                 sent_count += 1
 
     return sent_count
@@ -94,10 +96,11 @@ def save_used_token(file_path, token, sent_count):
         file.write(f"{token} | sent: {sent_count}\n")
 
 def process_token(token, message, proxy, used_tokens_path, thread_id):
-    sent_count = asyncio.run(spam_messages(token, message, proxy))
+    sent_count = asyncio.run(spam_messages(token, message, proxy, thread_id))  # Pass thread_id here
     save_used_token(used_tokens_path, token, sent_count)
     timestamp = time.strftime("%H:%M:%S")
     console.print(f"[green][{timestamp}][Thread {thread_id}] {token} | sent: {sent_count} messages[/]")
+
 
 async def main_spam():
     tokens = load_tokens('./spamer/tokens.txt')
